@@ -1,3 +1,4 @@
+# app/db.py
 import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -10,6 +11,7 @@ MONGO_DB = os.getenv("MONGO_DB", "learning_paths")
 mongo = MongoClient(MONGO_URI)
 db = mongo[MONGO_DB]
 paths = db["learning_paths"]
+
 
 def ping() -> bool:
     mongo.admin.command("ping")
