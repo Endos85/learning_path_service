@@ -1,6 +1,15 @@
 # app/helpers.py
-import requests
+import uuid, requests
+from datetime import datetime
 from typing import Any
+
+
+def gen_id(prefix: str) -> str:
+    return f"{prefix}-{uuid.uuid4()}"
+
+
+def now_dt():
+    return datetime.now()
 
 
 def get_json(url: str, timeout: int = 10) -> Any:
