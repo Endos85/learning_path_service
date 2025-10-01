@@ -68,7 +68,7 @@ def generate_path(body: GenerateRequest = Body(...)):
             "type": milestone.get("type"),
             "label": milestone.get("label"),
             "skillId": milestone.get("skillId"),
-            "topicID": milestone.get("topicID"),
+            "topicId": milestone.get("topicId"),
             "resources": milestone.get("resources", []),
             "status": milestone.get("status", "pending"),
         })
