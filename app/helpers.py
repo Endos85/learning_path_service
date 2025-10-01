@@ -1,4 +1,4 @@
-# app/helpers.py
+# app/helpers.py in learning-path-service
 import uuid, requests
 from datetime import datetime
 from typing import Any

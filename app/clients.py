@@ -1,4 +1,4 @@
-# app/clients.py
+# app/clients.py in learning-path-service
 import os
 from dotenv import load_dotenv
 from typing import List, Dict, Any

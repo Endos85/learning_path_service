@@ -1,4 +1,4 @@
-# app/main.py
+# app/main.py in learning-path-service
 import os
 from typing import Dict, List, Any, Optional
 from fastapi import FastAPI, HTTPException, Query, Path, Body
@@ -16,7 +16,6 @@ load_dotenv()
 
 PORT = int(os.getenv("PORT", "8000"))
 
-
 app = FastAPI(title="Learning Path Generator", version="0.0.1")
 app.add_middleware(
     CORSMiddleware,
@@ -29,7 +28,7 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {"service" : "learning-path-generator", "docs" : "/docs", "health" : "/healthz"}
+    return {"service": "learning-path-generator", "docs": "/docs", "health": "/healthz"}
 
 
 @app.get("/healthz")
@@ -41,12 +40,12 @@ def healthz():
     return {"status": "ok", "db": "up"}
 
 
-app.post("/generate", response_model=LearningPath)
+@app.post("/generate", response_model=LearningPath)
 def generate_path(body: GenerateRequest = Body(...)):
     try:
-        topics= fetch_topics()
-        skills=fetch_skills()
-        resources=fetch_resources()
+        topics = fetch_topics()
+        skills = fetch_skills()
+        resources = fetch_resources()
     except Exception as e:
         raise HTTPException(502, f"Upstream error: {e}")
 
@@ -60,7 +59,6 @@ def generate_path(body: GenerateRequest = Body(...)):
         )
     except Exception as e:
         raise HTTPException(502, f"OpenAI error: {e}")
-
 
     milestones: List[Dict[str, Any]] = []
 
@@ -81,12 +79,11 @@ def generate_path(body: GenerateRequest = Body(...)):
         "goals": {"skills": body.desiredSkills, "topics": body.desiredTopics},
         "summary": plan.get("summary", ""),
         "milestones": milestones,
-        "ceatedAt": now_dt(),
-        "updateddAt": now_dt(),
+        "createdAt": now_dt(),
+        "updatedAt": now_dt(),
     }
 
     paths.insert_one(doc)
-
     doc.pop("_id", None)
     return doc
 
@@ -94,11 +91,10 @@ def generate_path(body: GenerateRequest = Body(...)):
 @app.get("/paths", response_model=List[LearningPath])
 def list_paths(userId: Optional[str] = Query(None)):
     query = {}
-
     if userId:
         query["userId"] = userId
 
-    items = List(paths.find(query).sort("ceatedAt", -1))
+    items = list(paths.find(query).sort("createdAt", -1))
 
     for item in items:
         item.pop("_id", None)
@@ -116,4 +112,3 @@ def get_path(pathId: str = Path(...)):
     item.pop("_id", None)
 
     return item
-    
