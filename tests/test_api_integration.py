@@ -21,7 +21,6 @@ def test_generate_then_list_and_detail(client):
         "desiredTopics": ["Testing"]
     }
 
-    # 1️⃣ POST /generate
     response = client.post("/generate", json=payload)
     _assert_ok(response, 200)
     created = response.json()
